@@ -34,11 +34,11 @@ def get_wellness_report() -> str:
         total_exercise = 0
         days = len(logs)
         
-        for l in logs:
-            total_sleep += l['sleep_hours'] or 0
-            total_exercise += l['exercise_minutes'] or 0
+        for log in logs:
+            total_sleep += log['sleep_hours'] or 0
+            total_exercise += log['exercise_minutes'] or 0
             output.append(
-                f"- Date: {l['date']} | Sleep: {l['sleep_hours']}h | Exercise: {l['exercise_minutes']}m | Mood: {l['mood']} | Habits: {', '.join(l['habits'] or [])}"
+                f"- Date: {log['date']} | Sleep: {log['sleep_hours']}h | Exercise: {log['exercise_minutes']}m | Mood: {log['mood']} | Habits: {', '.join(log['habits'] or [])}"
             )
             
         avg_sleep = total_sleep / days if days > 0 else 0

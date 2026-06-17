@@ -1,7 +1,5 @@
 from google.adk.tools import ToolContext
-from google.adk.memory.memory_entry import MemoryEntry
 from google.genai import types
-import datetime
 
 async def search_memory_bank(query: str, tool_context: ToolContext) -> str:
     """Searches the digital twin's long-term memory bank for relevant context about the user's habits, history, preferences, and goals.

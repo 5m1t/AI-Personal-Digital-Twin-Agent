@@ -35,18 +35,18 @@ def get_financial_report() -> str:
         output = []
         output.append("### Recent Transactions:")
         # Show last 10 transactions
-        for l in logs[:10]:
-            output.append(f"- {l['date']} | {l['type'].upper()} | ${l['amount']:.2f} | Category: {l['category']} | {l['description']}")
+        for log in logs[:10]:
+            output.append(f"- {log['date']} | {log['type'].upper()} | ${log['amount']:.2f} | Category: {log['category']} | {log['description']}")
             
-        for l in logs:
-            if l['type'] == 'income':
-                total_income += l['amount']
+        for log in logs:
+            if log['type'] == 'income':
+                total_income += log['amount']
             else:
-                total_expense += l['amount']
-                categories[l['category']] = categories.get(l['category'], 0) + l['amount']
+                total_expense += log['amount']
+                categories[log['category']] = categories.get(log['category'], 0) + log['amount']
                 
         net_savings = total_income - total_expense
-        output.append(f"\n### Financial Summary:")
+        output.append("\n### Financial Summary:")
         output.append(f"Total Income: ${total_income:.2f}")
         output.append(f"Total Expenses: ${total_expense:.2f}")
         output.append(f"Net Savings: ${net_savings:.2f}")

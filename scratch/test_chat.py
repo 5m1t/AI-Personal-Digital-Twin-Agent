@@ -1,10 +1,10 @@
 import asyncio
 import os
 from dotenv import load_dotenv
-load_dotenv()
-
-from main import runner
 from google.genai import types
+from main import runner
+
+load_dotenv()
 
 async def test():
     print("API Key set:", bool(os.getenv("GEMINI_API_KEY")))
@@ -19,7 +19,7 @@ async def test():
             if event.content and event.content.parts:
                 text = "".join([p.text for p in event.content.parts if p.text])
                 print("Text content:", text)
-    except Exception as e:
+    except Exception:
         import traceback
         traceback.print_exc()
 

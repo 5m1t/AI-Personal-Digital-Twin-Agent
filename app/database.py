@@ -1,6 +1,5 @@
 import sqlite3
 import json
-import os
 from typing import List, Dict, Any, Optional
 
 DB_FILE = "digital_twin.db"

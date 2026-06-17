@@ -1,6 +1,4 @@
 import asyncio
-import time
-import os
 from google.genai import types
 from app.database import DatabaseRepository
 
@@ -83,7 +81,6 @@ class DigitalTwinEvaluator:
     async def run_routing_accuracy_test(self) -> dict:
         """Evaluates routing correctness by checking the orchestrator's agent assignment logic."""
         print("\n--- Running Routing Accuracy Test ---")
-        from app.agents.orchestrator import route_to_specialist
         
         passed = 0
         total = len(self.routing_scenarios)
@@ -131,8 +128,8 @@ class DigitalTwinEvaluator:
             goal_id = db.add_goal("Learn Rust Async", "Master Tokio and futures", "learning", "2026-10-31")
             
             # 2. Decompose into tasks
-            t1 = db.add_task("Review Future trait spec", "Understand poll methods", goal_id, "2026-06-30", "high")
-            t2 = db.add_task("Implement custom executor", "Create basic event loops", goal_id, "2026-07-15", "medium")
+            db.add_task("Review Future trait spec", "Understand poll methods", goal_id, "2026-06-30", "high")
+            db.add_task("Implement custom executor", "Create basic event loops", goal_id, "2026-07-15", "medium")
             
             # 3. Assert relations
             tasks = db.list_tasks(goal_id)

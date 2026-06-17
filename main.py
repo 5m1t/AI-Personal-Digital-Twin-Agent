@@ -8,8 +8,6 @@ from pydantic import BaseModel
 from typing import Optional, List
 from dotenv import load_dotenv
 
-load_dotenv()
-
 # Set up ADK Runner and Services
 from google.adk.runners import Runner
 from google.adk.sessions.in_memory_session_service import InMemorySessionService
@@ -18,6 +16,8 @@ from google.genai import types
 
 from app.database import DatabaseRepository
 from app.graphs.twin_workflow import twin_workflow
+
+load_dotenv()
 
 # Ensure database is initialized
 db = DatabaseRepository()
@@ -140,12 +140,13 @@ async def get_daily_briefing():
     todays_events = [e for e in calendar if e['start_time'].startswith(today)]
     
     # 2. Build the context prompt
+    goal_summaries = [f"{g['title']}: {g['progress']}% progress" for g in goals]
     context_prompt = (
         f"Generate my Daily Briefing for today ({today}).\n"
         f"Here is the context of my current metrics:\n"
         f"- Today's Calendar Events: {todays_events}\n"
         f"- Today's Priorities / Deadlines: {[t['title'] for t in todays_tasks]}\n"
-        f"- Goal status summary: {[{g['title']: f'{g['progress']}% progress'} for g in goals]}\n"
+        f"- Goal status summary: {goal_summaries}\n"
         f"- Recent Wellness metrics: {wellness}\n\n"
         "Draft a structured executive briefing detailing priorities, schedules, learning summaries, wellness insights, and suggested actions. Be encouraging and highly structured."
     )
@@ -184,11 +185,21 @@ async def trigger_weekly_reflection():
     completed_tasks = [t for t in tasks if t['status'] == 'done']
     pending_tasks = [t for t in tasks if t['status'] != 'done']
     
+    recent_transactions = [
+        f"{f['date']} | {f['type'].upper()}: ${f['amount']:.2f} ({f['category']})"
+        for f in finances[:5]
+    ]
+    wellness_summaries = [
+        f"{w['date']}: {w['sleep_hours']}h sleep, {w['exercise_minutes']}m exercise"
+        for w in wellness
+    ]
+    
     context_prompt = (
-        "Run the Weekly Reflection analysis.\n"
+        f"Run the Weekly Reflection analysis since {last_week}.\n"
         f"- Tasks Completed in last 7 days: {len(completed_tasks)}\n"
         f"- Pending / Overdue Tasks: {[t['title'] for t in pending_tasks]}\n"
-        f"- Wellness sleep & exercise log: {[{w['date']: f'{w['sleep_hours']}h sleep, {w['exercise_minutes']}m exercise'} for w in wellness]}\n"
+        f"- Wellness sleep & exercise log: {wellness_summaries}\n"
+        f"- Recent Transactions: {recent_transactions}\n"
         "- Inefficiencies to analyze: Check sleep schedules and completed vs planned milestones.\n\n"
         "Generate a structured Weekly Reflection Report outlining productivity analysis, wellness patterns, inefficiencies detected, and an actionable optimization plan."
     )

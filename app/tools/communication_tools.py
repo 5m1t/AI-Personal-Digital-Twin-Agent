@@ -10,7 +10,7 @@ def get_drafts():
     try:
         with open(DRAFTS_FILE, "r") as f:
             return json.load(f)
-    except:
+    except Exception:
         return []
 
 def save_draft(draft):
@@ -50,11 +50,11 @@ def format_meeting_notes(raw_notes: str) -> str:
     """
     # Simple formatting logic
     lines = raw_notes.split("\n")
-    cleaned_lines = [l.strip() for l in lines if l.strip()]
+    cleaned_lines = [line.strip() for line in lines if line.strip()]
     
     output = []
     output.append("=== MEETING SUMMARY ===")
-    output.append(f"Date: Stamped via Digital Twin Operating System")
+    output.append("Date: Stamped via Digital Twin Operating System")
     output.append("\nSummary of discussion points:")
     
     actions = []

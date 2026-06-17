@@ -1,5 +1,4 @@
 import os
-import json
 
 REPORTS_DIR = "research_reports"
 

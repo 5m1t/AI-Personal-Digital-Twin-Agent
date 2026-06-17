@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin AI - Personal OS Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="glow-spot glow-spot-1"></div>
+    <div class="glow-spot glow-spot-2"></div>
+
+    <div class="dashboard-wrapper">
+        <!-- Dashboard Header -->
+        <header class="main-header glass-card">
+            <div class="header-branding">
+                <h1>Digital Twin <span class="accent-text">AI</span></h1>
+                <p class="subtitle">Personal Agentic Operating System</p>
+            </div>
+            <div class="header-actions">
+                <button id="btn-briefing" class="action-btn glow-btn">
+                    <span class="icon">⚡</span> Get Daily Briefing
+                </button>
+                <button id="btn-reflect" class="action-btn secondary-btn">
+                    <span class="icon">🌀</span> Trigger Weekly Reflection
+                </button>
+            </div>
+        </header>
+
+        <!-- Briefing Section -->
+        <section id="briefing-panel" class="briefing-container glass-card hidden">
+            <div class="briefing-header">
+                <h3><span class="icon">📅</span> Daily Executive Briefing</h3>
+                <button id="btn-close-briefing" class="close-btn">×</button>
+            </div>
+            <div id="briefing-content" class="briefing-body markdown-style">
+                Loading daily briefing from your Executive Assistant...
+            </div>
+        </section>
+
+        <!-- Main Dashboard Content Grid -->
+        <main class="dashboard-grid">
+            <!-- Left Panel: AI Agent Chat -->
+            <section class="chat-section glass-card">
+                <div class="panel-header">
+                    <h3><span class="icon">💬</span> Digital Twin Agent Chat</h3>
+                    <span class="status-indicator online">Active</span>
+                </div>
+                <div id="chat-messages" class="messages-container">
+                    <div class="message system-msg">
+                        <p><strong>System:</strong> Welcome back, Alex. I am your Digital Twin Executive Assistant. How can I assist you with your productivity, learning, wellness, or career growth today?</p>
+                    </div>
+                </div>
+                <form id="chat-form" class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Ask your digital twin to manage goals, draft emails, log wellness, or search memories..." required>
+                    <button type="submit" class="send-btn">Send</button>
+                </form>
+            </section>
+
+            <!-- Right Panel: Data Modules & Tabs -->
+            <section class="dashboard-tabs glass-card">
+                <nav class="tabs-nav">
+                    <button class="tab-link active" data-tab="tab-goals">🎯 Goals & Tasks</button>
+                    <button class="tab-link" data-tab="tab-learning">🎓 Learning & Career</button>
+                    <button class="tab-link" data-tab="tab-wellness">📊 Wellness & Finance</button>
+                </nav>
+
+                <div class="tabs-content-wrapper">
+                    <!-- Tab 1: Goals & Tasks -->
+                    <div id="tab-goals" class="tab-pane active">
+                        <div class="section-sub-header">
+                            <h4>Long-Term Goals & Milestones</h4>
+                            <button class="add-inline-btn" id="add-goal-trigger">+ Add Goal</button>
+                        </div>
+                        <div id="goals-list" class="goals-grid">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <div class="section-sub-header mt-4">
+                            <h4>Tasks Checklist</h4>
+                            <button class="add-inline-btn" id="add-task-trigger">+ Add Task</button>
+                        </div>
+                        <div id="tasks-list" class="tasks-container">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Learning & Career -->
+                    <div id="tab-learning" class="tab-pane">
+                        <div class="section-sub-header">
+                            <h4>Study Plans</h4>
+                        </div>
+                        <div id="learning-plans" class="learning-grid">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <div class="section-sub-header mt-4">
+                            <h4>Professional Skills & Certification Roadmaps</h4>
+                        </div>
+                        <div id="career-skills" class="career-container">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Wellness & Finance -->
+                    <div id="tab-wellness" class="tab-pane">
+                        <div class="wellness-finance-grid">
+                            <div class="wellness-column">
+                                <div class="section-sub-header">
+                                    <h4>Wellness Tracker</h4>
+                                    <button class="add-inline-btn" id="log-wellness-trigger">Log Daily Stats</button>
+                                </div>
+                                <div id="wellness-metrics" class="metrics-cards">
+                                    <!-- Injected by JS -->
+                                </div>
+                            </div>
+                            <div class="finance-column">
+                                <div class="section-sub-header">
+                                    <h4>Financial Ledger</h4>
+                                    <button class="add-inline-btn" id="log-finance-trigger">Log Transaction</button>
+                                </div>
+                                <div id="finance-list" class="transactions-list">
+                                    <!-- Injected by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals for adding items -->
+    <div id="modal-goal" class="modal">
+        <div class="modal-content glass-card">
+            <h4>Create New Goal</h4>
+            <form id="goal-form">
+                <div class="form-group">
+                    <label for="goal-title">Goal Title</label>
+                    <input type="text" id="goal-title" required placeholder="e.g. Certify in AWS Cloud Practitioner">
+                </div>
+                <div class="form-group">
+                    <label for="goal-desc">Description</label>
+                    <textarea id="goal-desc" rows="3" placeholder="Define key success factors..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="goal-cat">Category</label>
+                        <select id="goal-cat">
+                            <option value="career">Career</option>
+                            <option value="learning">Learning</option>
+                            <option value="wellness">Wellness</option>
+                            <option value="finance">Finance</option>
+                            <option value="personal">Personal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal-date">Target Date</label>
+                        <input type="date" id="goal-date">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn modal-close">Cancel</button>
+                    <button type="submit" class="submit-btn glow-btn">Create Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-task" class="modal">
+        <div class="modal-content glass-card">
+            <h4>Add New Task</h4>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Task Name</label>
+                    <input type="text" id="task-title" required placeholder="e.g. Read DynamoDB chapter">
+                </div>
+                <div class="form-group">
+                    <label for="task-desc">Description</label>
+                    <textarea id="task-desc" rows="2" placeholder="Task specifics..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-goal">Link to Goal (Optional)</label>
+                    <select id="task-goal">
+                        <option value="">No goal linkage</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-date">Due Date</label>
+                        <input type="date" id="task-date">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn modal-close">Cancel</button>
+                    <button type="submit" class="submit-btn glow-btn">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-wellness" class="modal">
+        <div class="modal-content glass-card">
+            <h4>Log Daily Wellness Metrics</h4>
+            <form id="wellness-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="well-sleep">Sleep Duration (Hours)</label>
+                        <input type="number" step="0.1" id="well-sleep" required placeholder="e.g. 7.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="well-exercise">Exercise (Minutes)</label>
+                        <input type="number" id="well-exercise" required placeholder="e.g. 30">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="well-calories">Calories Burned</label>
+                        <input type="number" id="well-calories" placeholder="e.g. 350">
+                    </div>
+                    <div class="form-group">
+                        <label for="well-mood">Mood Today</label>
+                        <select id="well-mood">
+                            <option value="rested">Rested</option>
+                            <option value="energetic">Energetic</option>
+                            <option value="calm">Calm</option>
+                            <option value="tired">Tired</option>
+                            <option value="stressed">Stressed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Habits Completed Today</label>
+                    <div class="habits-checkboxes">
+                        <label><input type="checkbox" name="habit" value="Sleep at 11PM"> Sleep at 11PM</label>
+                        <label><input type="checkbox" name="habit" value="Drink 3L Water"> Drink 3L Water</label>
+                        <label><input type="checkbox" name="habit" value="Exercise 30m"> Exercise 30m</label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn modal-close">Cancel</button>
+                    <button type="submit" class="submit-btn glow-btn">Save Logs</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-finance" class="modal">
+        <div class="modal-content glass-card">
+            <h4>Log Transaction</h4>
+            <form id="finance-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fin-amount">Amount ($)</label>
+                        <input type="number" step="0.01" id="fin-amount" required placeholder="e.g. 19.99">
+                    </div>
+                    <div class="form-group">
+                        <label for="fin-type">Type</label>
+                        <select id="fin-type">
+                            <option value="expense">Expense</option>
+                            <option value="income">Income</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fin-cat">Category</label>
+                        <select id="fin-cat">
+                            <option value="food">Food</option>
+                            <option value="subscriptions">Subscriptions</option>
+                            <option value="learning">Learning/Books</option>
+                            <option value="transport">Transport</option>
+                            <option value="rent">Rent/Utilities</option>
+                            <option value="salary">Salary</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fin-desc">Description</label>
+                        <input type="text" id="fin-desc" required placeholder="e.g. Grocery store purchase">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn modal-close">Cancel</button>
+                    <button type="submit" class="submit-btn glow-btn">Log Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
